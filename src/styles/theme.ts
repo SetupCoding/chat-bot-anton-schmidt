@@ -1,12 +1,16 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
-export const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#556cd6',
+export const theme = responsiveFontSizes(
+  createTheme({
+    components: {
+      MuiTypography: {
+        defaultProps: {
+          variantMapping: {
+            h2: 'h1',
+            h3: 'h2',
+          },
+        },
+      },
     },
-    secondary: {
-      main: '#19857b',
-    },
-  },
-});
+  })
+);

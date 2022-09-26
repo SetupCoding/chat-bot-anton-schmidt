@@ -18,7 +18,7 @@ export const sendPUT = (flow: Step[]): Promise<any> => {
     ),
   };
 
-  return fetch(PUT_API_URL, requestOptions).then((response) => response.json());
+  return fetch(PUT_API_URL, requestOptions).then((response) => response.text());
 };
 
 export const fetchFlowData = async (): Promise<{
