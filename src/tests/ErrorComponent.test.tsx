@@ -8,6 +8,11 @@ const getButton = (): HTMLElement =>
     name: /Erneut absenden/i,
   });
 
+const queryHeading = (): HTMLElement | null =>
+  screen.queryByRole('heading', {
+    name: /Ein Fehler ist aufgetreten\./i,
+  });
+
 describe('ErrorComponent', () => {
   const mockRetryCallback = jest.fn();
   const props = {
@@ -18,11 +23,7 @@ describe('ErrorComponent', () => {
   it('should not render ErrorComponent when no error is passed', () => {
     render(<ErrorComponent />);
 
-    const heading = screen.queryByRole('heading', {
-      name: /Ein Fehler ist aufgetreten\./i,
-    });
-
-    expect(heading).toBeNull();
+    expect(queryHeading()).toBeNull();
   });
 
   it('should render ErrorComponent with a heading and no button when no retryCallback is passed', () => {
@@ -42,11 +43,7 @@ describe('ErrorComponent', () => {
   it('should render ErrorComponent with a heading and a retry button when retryCallback is passed', () => {
     render(<ErrorComponent {...props} />);
 
-    const heading = screen.getByRole('heading', {
-      name: /Ein Fehler ist aufgetreten\./i,
-    });
-
-    expect(heading).toBeInTheDocument();
+    expect(queryHeading()).toBeInTheDocument();
 
     expect(getButton()).toBeInTheDocument();
   });
