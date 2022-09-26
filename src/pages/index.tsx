@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { Chat, ErrorComponent, LoadingIndicator } from '../components';
 import type { RequestState, Step } from '../models';
 import { fetchFlowData, sendPUT } from '../services';
-import { deepCopy } from '../utils/deepCopy';
+import { deepCopy, getStepById } from '../utils';
 
 type Props = {
   flowData: Step[];
@@ -21,12 +21,7 @@ export const Home: NextPage<
 > = ({ flowData, errorMessage }) => {
   const flowDataMutable = deepCopy<Step[]>(flowData);
 
-  const getStepById = (id: number | boolean): Step | undefined =>
-    typeof id === 'boolean'
-      ? undefined
-      : flowDataMutable.find((step) => step.id === id);
-
-  const firstStep = getStepById(100) as Step;
+  const firstStep = getStepById(100, flowDataMutable) as Step;
 
   const [flow, setFlow] = useState<Step[]>([firstStep]);
   const [isFlowFinished, setIsFlowFinished] = useState(false);
@@ -51,14 +46,14 @@ export const Home: NextPage<
       const indexToUpdate = updatedState.findIndex(
         (step) => step.id === stepId
       );
-      const nextStep = getStepById(nextId);
+      const nextStep = getStepById(nextId, flowDataMutable);
 
       // update flow if a previous selection was changed
       if (indexToUpdate < updatedState.length - 1) {
         updatedState.length = indexToUpdate + 1;
       }
 
-      // change selected option value
+      // update selected option values
       updatedState[indexToUpdate]?.valueOptions.forEach((option) => {
         option.isSelected = option.value === selectedOptionValue;
       });

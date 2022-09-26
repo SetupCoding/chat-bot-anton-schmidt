@@ -1,5 +1,5 @@
 import type { Step } from '../models';
-import { getStepById } from '../utils/getStepById';
+import { getStepById } from '../utils';
 
 const elementOne = { id: 1 };
 const elementTwo = { id: 2 };
