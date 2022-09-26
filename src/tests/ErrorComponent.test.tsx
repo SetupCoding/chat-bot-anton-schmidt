@@ -1,7 +1,7 @@
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Chat, ErrorComponent } from '../components';
-import '@testing-library/jest-dom';
+import { ErrorComponent } from '../components';
 
 const getButton = (): HTMLElement =>
   screen.getByRole('button', {
@@ -15,7 +15,7 @@ describe('ErrorComponent', () => {
     retryCallback: mockRetryCallback,
   };
 
-  it('should not render error component when no error is passed', () => {
+  it('should not render ErrorComponent when no error is passed', () => {
     render(<ErrorComponent />);
 
     const heading = screen.queryByRole('heading', {
@@ -25,7 +25,7 @@ describe('ErrorComponent', () => {
     expect(heading).toBeNull();
   });
 
-  it('should render error component with a heading and no button when no retryCallback is passed', () => {
+  it('should render ErrorComponent with a heading and no button when no retryCallback is passed', () => {
     render(<ErrorComponent {...props} retryCallback={undefined} />);
 
     const heading = screen.getByRole('heading', {
@@ -39,7 +39,7 @@ describe('ErrorComponent', () => {
     expect(button).toBeNull();
   });
 
-  it('should render error component with a heading and a retry button when retryCallback is passed', () => {
+  it('should render ErrorComponent with a heading and a retry button when retryCallback is passed', () => {
     render(<ErrorComponent {...props} />);
 
     const heading = screen.getByRole('heading', {
