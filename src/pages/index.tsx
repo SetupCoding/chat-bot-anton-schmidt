@@ -4,8 +4,9 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from 'next';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { Chat } from '../components';
+import { Chat, ErrorComponent, LoadingIndicator } from '../components';
 import type { RequestState, Step } from '../models';
 import { fetchFlowData, sendPUT } from '../services';
 import { deepCopy } from '../utils/deepCopy';
@@ -92,29 +93,56 @@ export const Home: NextPage<
   };
 
   return (
-    <Container maxWidth="xl" component="main">
-      <Box
-        sx={{
-          my: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h2" component="h1">
-          Versicherungs-Helfer
-        </Typography>
-        {!errorMessage && <Chat flow={flow} selectOption={selectOption} />}
-        {requestState.isSuccess && (
-          <Typography variant="h3">
-            Herzlichen Dank für Ihre Angaben!
-          </Typography>
-        )}
-      </Box>
-    </Container>
+    <>
+      <Head>
+        <title>Versicherungs-Helfer</title>
+        <meta
+          name="description"
+          content="A chat bot to help you pick an insurance type"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container maxWidth="xl" component="main">
+        <Box
+          component="section"
+          sx={{
+            my: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="h2">Versicherungs-Helfer</Typography>
+          {!errorMessage && (
+            <Chat
+              flow={flow}
+              isFlowFinished={isFlowFinished}
+              selectOption={selectOption}
+            />
+          )}
+          <LoadingIndicator isLoading={!!requestState.isLoading} />
+          {requestState.isSuccess && (
+            <Typography variant="h3">
+              Herzlichen Dank für Ihre Angaben!
+            </Typography>
+          )}
+
+          <Box sx={{ my: 4, padding: 4 }}>
+            <ErrorComponent
+              error={requestState.error}
+              retryCallback={sendPUTRequest}
+            />
+            <ErrorComponent error={errorMessage} />
+          </Box>
+        </Box>
+      </Container>
+    </>
   );
 };
+
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
   return {
     props: await fetchFlowData(),
