@@ -5,6 +5,7 @@ import type {
   NextPage,
 } from 'next';
 import Head from 'next/head';
+import { useCallback } from 'react';
 import { useEffect, useState } from 'react';
 import { Chat, ErrorComponent, LoadingIndicator } from '../components';
 import type { RequestState, Step } from '../models';
@@ -29,12 +30,6 @@ export const Home: NextPage<
     isLoading: false,
     isSuccess: false,
   });
-
-  useEffect(() => {
-    if (isFlowFinished) {
-      sendPUTRequest();
-    }
-  }, [isFlowFinished]);
 
   const selectOption = (
     stepId: number,
@@ -68,7 +63,7 @@ export const Home: NextPage<
     });
   };
 
-  const sendPUTRequest = () => {
+  const sendPUTRequest = useCallback(() => {
     setRequestState({
       isSuccess: false,
       isLoading: true,
@@ -85,7 +80,13 @@ export const Home: NextPage<
       .finally(() => {
         setRequestState((prev) => ({ ...prev, isLoading: false }));
       });
-  };
+  }, [flow]);
+
+  useEffect(() => {
+    if (isFlowFinished) {
+      sendPUTRequest();
+    }
+  }, [isFlowFinished, sendPUTRequest]);
 
   return (
     <>
