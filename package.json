@@ -2,11 +2,16 @@
   "name": "chat-bot-anton-schmidt",
   "version": "5.0.0",
   "private": true,
+  "author": {
+    "name": "Anton Schmidt",
+    "email": "antons@redandroid.io"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "yarn run test:unit && yarn run test:e2e",
     "test:unit": "jest",
     "test:e2e": "playwright test"
   },
