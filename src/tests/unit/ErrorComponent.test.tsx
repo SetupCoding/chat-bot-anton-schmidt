@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ErrorComponent } from '../components';
+import { ErrorComponent } from '../../components';
 
 const getButton = (): HTMLElement =>
   screen.getByRole('button', {

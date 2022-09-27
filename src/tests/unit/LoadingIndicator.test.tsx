@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { LoadingIndicator } from '../components';
+import { LoadingIndicator } from '../../components';
 
 const queryHeading = (): HTMLElement | null =>
   screen.queryByRole('heading', {
