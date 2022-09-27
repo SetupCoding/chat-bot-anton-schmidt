@@ -5,11 +5,11 @@ import type {
   NextPage,
 } from 'next';
 import Head from 'next/head';
-import { useCallback } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Chat, ErrorComponent, LoadingIndicator } from '../components';
-import type { RequestState, Step } from '../models';
-import { fetchFlowData, sendPUT } from '../services';
+import { useSendPut } from '../hooks';
+import type { Step } from '../models';
+import { fetchFlowData } from '../services';
 import { deepCopy, getStepById } from '../utils';
 
 type Props = {
@@ -26,10 +26,11 @@ export const Home: NextPage<
 
   const [flow, setFlow] = useState<Step[]>([firstStep]);
   const [isFlowFinished, setIsFlowFinished] = useState(false);
-  const [requestState, setRequestState] = useState<RequestState>({
-    isLoading: false,
-    isSuccess: false,
-  });
+
+  const { isSuccess, error, isLoading, sendPUTRequest } = useSendPut(
+    flow,
+    isFlowFinished
+  );
 
   const selectOption = (
     stepId: number,
@@ -63,31 +64,6 @@ export const Home: NextPage<
     });
   };
 
-  const sendPUTRequest = useCallback(() => {
-    setRequestState({
-      isSuccess: false,
-      isLoading: true,
-      error: undefined,
-    });
-
-    sendPUT(flow)
-      .then(() => {
-        setRequestState({ isSuccess: true });
-      })
-      .catch((error: Error) => {
-        setRequestState({ isSuccess: false, error });
-      })
-      .finally(() => {
-        setRequestState((prev) => ({ ...prev, isLoading: false }));
-      });
-  }, [flow]);
-
-  useEffect(() => {
-    if (isFlowFinished) {
-      sendPUTRequest();
-    }
-  }, [isFlowFinished, sendPUTRequest]);
-
   return (
     <>
       <Head>
@@ -119,18 +95,15 @@ export const Home: NextPage<
               selectOption={selectOption}
             />
           )}
-          <LoadingIndicator isLoading={!!requestState.isLoading} />
-          {requestState.isSuccess && (
+          <LoadingIndicator isLoading={!!isLoading} />
+          {isSuccess && (
             <Typography variant="h3">
               Herzlichen Dank für Ihre Angaben!
             </Typography>
           )}
 
           <Box sx={{ my: 4, padding: 4 }}>
-            <ErrorComponent
-              error={requestState.error}
-              retryCallback={sendPUTRequest}
-            />
+            <ErrorComponent error={error} retryCallback={sendPUTRequest} />
             <ErrorComponent error={errorMessage} />
           </Box>
         </Box>

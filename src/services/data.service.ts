@@ -6,21 +6,6 @@ const FLOW_FETCH_URL =
 export const PUT_API_URL =
   'https://virtserver.swaggerhub.com/L8475/task/1.0.1/conversation';
 
-export const sendPUT = (flow: Step[]): Promise<any> => {
-  const requestOptions = {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(
-      flow.map(({ name, valueOptions }) => ({
-        name,
-        value: valueOptions.find(({ isSelected }) => isSelected)?.value,
-      }))
-    ),
-  };
-
-  return fetch(PUT_API_URL, requestOptions).then((response) => response.text());
-};
-
 export const fetchFlowData = async (): Promise<{
   flowData: Step[];
   errorMessage?: string;
