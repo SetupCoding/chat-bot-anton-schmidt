@@ -135,6 +135,8 @@ test('should display error message if PUT request was unsuccessful and retry suc
   await expect(
     page.locator('text=Herzlichen Dank für Ihre Angaben!')
   ).toHaveCount(1);
+
+  await expect(page.locator('text=Ein Fehler ist aufgetreten.')).toHaveCount(0);
 });
 
 test('should remove visible steps when changing a previous value', async ({
