@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Chat } from '../components';
+import { Chat } from '../../components';
 import '@testing-library/jest-dom';
 
-import { Step } from '../models';
+import { Step } from '../../models';
 import React from 'react';
 
 const mockFlow: Pick<Step, 'id' | 'text' | 'valueOptions'>[] = [
