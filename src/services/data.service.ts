@@ -1,10 +1,10 @@
 import type { FlowDTO, Step, ValueOption, ValueOptionsEntity } from '../models';
 
-const PUT_API_URL =
-  'https://virtserver.swaggerhub.com/L8475/task/1.0.1/conversation';
-
 const FLOW_FETCH_URL =
   'https://raw.githubusercontent.com/mzronek/task/main/flow.json';
+
+export const PUT_API_URL =
+  'https://virtserver.swaggerhub.com/L8475/task/1.0.1/conversation';
 
 export const sendPUT = (flow: Step[]): Promise<any> => {
   const requestOptions = {
