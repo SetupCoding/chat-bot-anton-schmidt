@@ -39,7 +39,7 @@ Run `yarn test`
 
 - Preserve client side state and selected options upon refresh
 - Use [Orval](https://orval.dev/) and [React Query](https://tanstack.com/query/v4) for leaner handling of requests, loading and error states based on OpenAPI specification
-- Use [Orval](https://orval.dev/) to generate client code and mock data
+- Use [Orval](https://orval.dev/) to generate client code and provide mock data using [Mock Service Worker](https://mswjs.io/) 
 - [Dockerize](https://nextjs.org/docs/deployment#docker-image) application
 - [Deploy application](https://nextjs.org/docs/deployment#serverless) (e.g. using Vercel/ AWS Serverless / Terraform / Netlify)
 - CI/CD Pipeline (e.g. using GitHub Actions) to run tests and deploy application
